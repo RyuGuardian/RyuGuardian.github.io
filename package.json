@@ -1,0 +1,26 @@
+{
+  "name": "homepage",
+  "version": "0.1.0",
+  "description": "My public homepage",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RyuGuardian/RyuGuardian.github.io.git"
+  },
+  "keywords": [
+    "ryuguardian",
+    "homepage",
+    "html",
+    "css",
+    "angular"
+  ],
+  "author": "Austin A. King <aust.a.king@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RyuGuardian/RyuGuardian.github.io/issues"
+  },
+  "homepage": "https://github.com/RyuGuardian/RyuGuardian.github.io#readme"
+}
