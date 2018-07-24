@@ -8,17 +8,23 @@
 
 <template>
   <header>
-    <h1>{{ message }}</h1>
+    <h1>{{ msg }}</h1>
   </header>
 </template>
 
 <script>
+import store from '../../vuex/store';
+
 export default {
   props: {
     message: {
       type: String,
       default: 'This is Vue.'
     }
+  },
+  store,
+  computed: {
+    msg() { return this.$store.state.msg; }
   }
 };
 </script>

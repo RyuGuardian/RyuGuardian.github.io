@@ -2,19 +2,24 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint'
   },
-  extends: [
-    'plugin:vue/recommended',
-    'standard'
-  ],
+
   plugins: [
     'vue'
   ],
+
+  extends: [
+    'standard',
+    'plugin:vue/recommended'
+  ],
+
   rules: {
     'semi': ['error', 'always'],
-    'keyword-spacing': ['warn', { "overrides": {
-      "if": { "after": false },
-      "for": { "after": false },
-      "while": { "after": false }
-    }}]
+    'keyword-spacing': ['warn', { 'overrides': {
+      'if': { 'after': false },
+      'for': { 'after': false },
+      'while': { 'after': false }
+    }}],
+    'space-before-function-paren': ['warn', 'never'],
+    'no-unused-vars': ['warn']
   }
 }
