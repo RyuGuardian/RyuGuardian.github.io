@@ -1,18 +1,17 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+
+import playerModule from './player/index';
+
 Vue.use(Vuex);
 
 const state = {
   msg: 'This is Vuex.'
 };
 
-const mutations = {
-  changeMsg(state, msg) {
-    state.msg = msg;
-  }
-};
-
 export default new Vuex.Store({
-  state: state,
-  mutations: mutations
+  state,
+  modules: {
+    player: playerModule
+  }
 });
