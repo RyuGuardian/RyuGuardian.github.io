@@ -13,18 +13,13 @@
 </template>
 
 <script>
-import store from '../../vuex/store';
 
 export default {
   props: {
-    message: {
+    msg: {
       type: String,
       default: 'This is Vue.'
     }
-  },
-  store,
-  computed: {
-    msg() { return this.$store.state.msg; }
   }
 };
 </script>

@@ -1,4 +1,10 @@
 body{background:pink}
 
-header h1[data-v-309ff6c8]{color:black
+.app[data-v-53f8ef0c]{background-color:lightblue
+}
+
+header h1[data-v-e6018f12]{color:black
+}
+
+.player[data-v-2b59a180]{display:inline-block;position:absolute;background-color:green;width:100px;height:100px
 }
