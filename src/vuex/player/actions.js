@@ -2,16 +2,17 @@
 import * as mType from './mutation_consts';
 
 export default {
-  movePlayer: ({ commit }, e) => {
-    let xMove = 0;
-
-    if(e.code === 'KeyA' || e.code === 'ArrowLeft') {
-      xMove = -1;
+  updatePlayer: ({ commit }) => {
+    commit(mType.UPDATE_PLAYER);
+  },
+  movePlayerLeft: ({ commit, state }, e) => {
+    if(!e.repeat && state.direction > -1) {
+      commit(mType.CHANGE_DIRECTION, -1);
     }
-    else if(e.code === 'KeyD' || e.code === 'ArrowRight') {
-      xMove = 1;
+  },
+  movePlayerRight: ({ commit, state }, e) => {
+    if(!e.repeat && state.direction < 1) {
+      commit(mType.CHANGE_DIRECTION, 1);
     }
-
-    commit(mType.MOVE_PLAYER, xMove);
   }
 };
