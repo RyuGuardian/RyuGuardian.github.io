@@ -11,7 +11,8 @@
 <template>
   <div class="app">
     <GlobalEvents
-      @keydown.move="movePlayer"
+      @keydown.left="movePlayerLeft"    @keyup.left="movePlayerRight"
+      @keydown.right="movePlayerRight"  @keyup.right="movePlayerLeft"
     />
     <Header msg="Prop passed from App." />
     <Player ref="player" :position="getPlayerPosition" />
@@ -32,8 +33,21 @@ export default {
     Header,
     Player
   },
-  computed: mapGetters('player', ['getPlayerPosition']),
-  methods: mapActions('player', ['movePlayer']),
+  computed: mapGetters('player', ['getPlayerPosition', 'getPlayerDirection', 'getPlayerSpeed']),
+  mounted: function() {
+    this.$nextTick(function() {
+      // Start loop
+      this.startLoop(
+        setInterval(() => {
+          this.updatePlayer();
+        }, 20)
+      );
+    });
+  },
+  methods: Object.assign({},
+    mapActions(['startLoop']),
+    mapActions('player', ['updatePlayer', 'movePlayerLeft', 'movePlayerRight'])
+  ),
   store
 };
 

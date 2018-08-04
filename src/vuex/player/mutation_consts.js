@@ -1,2 +1,3 @@
 // --PLAYER
-export const MOVE_PLAYER = 'MOVE_PLAYER';
+export const UPDATE_PLAYER = 'UPDATE_PLAYER';
+export const CHANGE_DIRECTION = 'CHANGE_DIRECTION';
