@@ -2,17 +2,20 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 // APP
+// import * as getters from './getters';
 import mutations from './mutations';
 import actions from './actions';
 
-// PLAYER
-import playerModule from './player/index';
+// MODULES
+import map from './map/index';
+import player from './player/index';
 
 Vue.use(Vuex);
 
 const state = {
-  msg: 'This is Vuex.',
-  loop: null
+  loop: null,
+  isPaused: true,
+  gravity: 1
 };
 
 export default new Vuex.Store({
@@ -20,6 +23,7 @@ export default new Vuex.Store({
   mutations,
   actions,
   modules: {
-    player: playerModule
+    map,
+    player
   }
 });

@@ -1,4 +1,2 @@
 // --PLAYER
-export const getPlayerPosition = (state) => state.position;
-export const getPlayerDirection = (state) => state.direction;
-export const getPlayerSpeed = (state) => state.speed;
+export const getPlayerBottomY = (state) => state.position.y + Math.floor(state.height / 2);

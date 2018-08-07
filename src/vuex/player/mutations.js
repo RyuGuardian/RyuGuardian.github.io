@@ -1,13 +1,21 @@
 // --PLAYER
-import Vue from 'vue';
-
 import * as mType from './mutation_consts';
 
 export default {
-  [mType.CHANGE_DIRECTION](state, x) {
-    state.direction += x;
+  [mType.CHANGE_MOVEMENT_DIRECTION](state, x) {
+    state.movementDirection += x;
   },
-  [mType.UPDATE_PLAYER](state) {
-    Vue.set(state.position, 0, state.position[0] + (state.direction * state.speed));
+
+  [mType.CHANGE_ON_GROUND_STATUS](state, hasCollision) {
+    state.onGround = hasCollision;
+  },
+
+  [mType.CHANGE_FALL_SPEED](state, acceleration) {
+    state.fallSpeed += acceleration;
+  },
+
+  [mType.UPDATE_POSITION](state, { xChange, yChange }) {
+    state.position.x += xChange;
+    state.position.y += yChange;
   }
 };
