@@ -56,7 +56,7 @@ export default {
       'jumpStrength',
       'fallSpeed'
     ]),
-    mapGetters('player', ['getPlayerBottomY'])
+    mapGetters('player', ['getPlayerLeftX', 'getPlayerRightX', 'getPlayerTopY', 'getPlayerBottomY'])
   ),
 
   mounted: function() {

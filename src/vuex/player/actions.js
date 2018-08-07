@@ -13,11 +13,29 @@ export default {
     }
   },
 
-  updatePlayerOnGround: ({ commit }, hasCollision) => {
+  updatePlayerOnGround: ({ commit, dispatch }, hasCollision) => {
     commit(mType.CHANGE_ON_GROUND_STATUS, hasCollision);
+    dispatch('updatePlayerFallSpeed');
   },
 
-  updatePlayer: ({ commit, state, getters, rootState }, { terrain }) => {
+  updatePlayerFallSpeed: ({ commit, state, rootState }) => {
+    var acceleration = rootState.gravity;
+
+    if(state.onGround) {
+      acceleration = -state.fallSpeed;
+    }
+    // ElseIfs limit fallSpeed to "terminal velocity"
+    else if(state.fallSpeed === state.maxFallSpeed) {
+      acceleration = 0;
+    }
+    else if(state.fallSpeed + rootState.gravity >= state.maxFallSpeed) {
+      acceleration = state.maxFallSpeed - state.fallSpeed;
+    }
+
+    commit(mType.CHANGE_FALL_SPEED, acceleration);
+  },
+
+  updatePlayer: ({ commit, dispatch, state, getters, rootState }, { terrain }) => {
     var positionChange = {
       x: state.movementDirection * state.movementSpeed,
       y: state.fallSpeed + (state.onGround ? 0 : rootState.gravity)
@@ -48,18 +66,11 @@ export default {
 
       if(willCollideWithGround) {
         // Update status and fall speed on collision
-        commit(mType.CHANGE_ON_GROUND_STATUS, true);
-        commit(mType.CHANGE_FALL_SPEED, -state.fallSpeed);
+        dispatch('updatePlayerOnGround', true);
         positionChange.y = highestGroundPoint - getters.getPlayerBottomY;
       }
       else {
-        // Update fall speed, but don't go faster than "terminal velocity"
-        if(state.fallSpeed + rootState.gravity >= state.maxFallSpeed) {
-          commit(mType.CHANGE_FALL_SPEED, (state.maxFallSpeed - state.fallSpeed));
-        }
-        else {
-          commit(mType.CHANGE_FALL_SPEED, rootState.gravity);
-        }
+        dispatch('updatePlayerFallSpeed');
       }
     }
 
