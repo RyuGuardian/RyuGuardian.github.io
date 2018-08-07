@@ -30,13 +30,17 @@ module.exports = {
     'comma-dangle': 'warn',
     'padded-blocks': 'warn',
     'spaced-comment': 'warn',
+    'space-in-parens': 'warn',
+    'operator-linebreak': ['warn', 'before', { 'overrides': { '?': 'ignore', ':': 'ignore' } }],
+    'space-before-blocks': 'warn',
 
     'vue/require-prop-types': 'warn',
     'vue/valid-v-on': 'off',
-    'vue/html-indent': 'warn',
+    'vue/html-indent': ['warn', 2, { 'alignAttributesVertically': false }],
     'vue/attributes-order': 'warn',
     'vue/order-in-components': 'warn',
     'vue/no-multi-spaces': 'off',
+    'vue/return-in-computed-property': 'warn',
     'vue/max-attributes-per-line': [
       'warn',
       { 'singleline': 3,

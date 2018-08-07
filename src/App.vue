@@ -1,8 +1,9 @@
+// --APP
 /*** STYLE ***/
 <style lang="scss" scoped>
 
 .app {
-  background-color: lightblue;
+  height: 100%;
 }
 
 </style>
@@ -11,43 +12,72 @@
 <template>
   <div class="app">
     <GlobalEvents
+      @keydown.esc="pauseLoop"
       @keydown.left="movePlayerLeft"    @keyup.left="movePlayerRight"
       @keydown.right="movePlayerRight"  @keyup.right="movePlayerLeft"
+      @keydown.jump="jumpPlayer"
     />
-    <Header msg="Prop passed from App." />
-    <Player ref="player" :position="getPlayerPosition" />
+
+    <Map ref="map"
+      :terrain="terrainLines">
+      <Player ref="player"
+        :width="width"
+        :height="height"
+        :position="position"
+      />
+    </Map>
   </div>
 </template>
 
 /*** SCRIPT ***/
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 
 import store from './vuex/store';
 
-import Header from './components/layout/Header.vue';
+import Map from './components/map/Map.vue';
 import Player from './components/player/Player.vue';
 
 export default {
   components: {
-    Header,
+    Map,
     Player
   },
-  computed: mapGetters('player', ['getPlayerPosition', 'getPlayerDirection', 'getPlayerSpeed']),
+
+  computed: Object.assign({},
+    mapState(['gravity', 'isPaused']),
+    mapState('map', ['terrainLines']),
+    mapState('player', [
+      'width',
+      'height',
+      'position',
+      'movementDirection',
+      'movementSpeed',
+      'onGround',
+      'jumpStrength',
+      'fallSpeed'
+    ]),
+    mapGetters('player', ['getPlayerLeftX', 'getPlayerRightX', 'getPlayerTopY', 'getPlayerBottomY'])
+  ),
+
   mounted: function() {
     this.$nextTick(function() {
       // Start loop
       this.startLoop(
         setInterval(() => {
-          this.updatePlayer();
+          if(this.isPaused === false) {
+            this.updatePlayer({ terrain: this.terrainLines });
+          }
         }, 20)
       );
     });
   },
+
   methods: Object.assign({},
-    mapActions(['startLoop']),
-    mapActions('player', ['updatePlayer', 'movePlayerLeft', 'movePlayerRight'])
+    mapActions(['startLoop', 'pauseLoop']),
+    mapActions('player', ['movePlayerLeft', 'movePlayerRight', 'jumpPlayer', 'updatePlayer'])
   ),
+
   store
 };
 
