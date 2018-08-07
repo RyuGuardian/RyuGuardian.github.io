@@ -35,6 +35,13 @@ export default {
     commit(mType.CHANGE_FALL_SPEED, acceleration);
   },
 
+  jumpPlayer: ({ commit, dispatch, state }) => {
+    if(state.fallSpeed === 0 && state.onGround) {
+      commit(mType.CHANGE_FALL_SPEED, -state.jumpStrength);
+      dispatch('updatePlayerOnGround', false);
+    }
+  },
+
   updatePlayer: ({ commit, dispatch, state, getters, rootState }, { terrain }) => {
     var positionChange = {
       x: state.movementDirection * state.movementSpeed,
@@ -42,35 +49,38 @@ export default {
     };
 
     if(!state.onGround) {
-      let highestGroundPoint = getters.getPlayerBottomY;
+      // Update fallSpeed whenever off ground
+      dispatch('updatePlayerFallSpeed');
 
-      // Predict collision (current pos + new pos >= highest point on ground)
-      // terrain is an array of lines below Player, determined and passed by App
-      let willCollideWithGround = terrain.reduce((status, line) => {
-        let highestPoint = line.reduce((pointA, pointB) => {
-          return (pointA[1] < pointB[1] ? pointA[1] : pointB[1]);
-        });
+      if(state.fallSpeed >= 0) {
+        // Check for ground collision only if falling downward
+        let highestGroundPoint = getters.getPlayerBottomY;
 
-        if(highestGroundPoint < highestPoint) {
-          highestGroundPoint = highestPoint;
+        // Predict collision (current pos + new pos >= highest point on ground)
+        // terrain is an array of lines below Player, determined and passed by App
+        let willCollideWithGround = terrain.reduce((status, line) => {
+          let highestPoint = line.reduce((pointA, pointB) => {
+            return (pointA[1] < pointB[1] ? pointA[1] : pointB[1]);
+          });
+
+          if(highestGroundPoint < highestPoint) {
+            highestGroundPoint = highestPoint;
+          }
+
+          // Calculates for flat-bottomed rectangular Player
+          if(status || (getters.getPlayerBottomY + positionChange.y) >= highestGroundPoint) {
+            return true;
+          }
+          else {
+            return false;
+          }
+        }, false);
+
+        if(willCollideWithGround) {
+          // Update status and fall speed on collision
+          dispatch('updatePlayerOnGround', true);
+          positionChange.y = highestGroundPoint - getters.getPlayerBottomY;
         }
-
-        // Calculates for flat-bottomed rectangular Player
-        if(status || (getters.getPlayerBottomY + positionChange.y) >= highestGroundPoint) {
-          return true;
-        }
-        else {
-          return false;
-        }
-      }, false);
-
-      if(willCollideWithGround) {
-        // Update status and fall speed on collision
-        dispatch('updatePlayerOnGround', true);
-        positionChange.y = highestGroundPoint - getters.getPlayerBottomY;
-      }
-      else {
-        dispatch('updatePlayerFallSpeed');
       }
     }
 

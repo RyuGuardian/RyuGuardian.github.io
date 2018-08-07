@@ -15,6 +15,7 @@
       @keydown.esc="pauseLoop"
       @keydown.left="movePlayerLeft"    @keyup.left="movePlayerRight"
       @keydown.right="movePlayerRight"  @keyup.right="movePlayerLeft"
+      @keydown.jump="jumpPlayer"
     />
 
     <Map ref="map"
@@ -74,7 +75,7 @@ export default {
 
   methods: Object.assign({},
     mapActions(['startLoop', 'pauseLoop']),
-    mapActions('player', ['movePlayerLeft', 'movePlayerRight', 'updatePlayerOnGround', 'updatePlayer'])
+    mapActions('player', ['movePlayerLeft', 'movePlayerRight', 'jumpPlayer', 'updatePlayer'])
   ),
 
   store

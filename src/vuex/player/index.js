@@ -10,7 +10,7 @@ const initialState = {
   movementDirection: 0,
   movementSpeed: 5,
   onGround: false,
-  jumpStrength: 200,
+  jumpStrength: 25,
   fallSpeed: 0,
   maxFallSpeed: 15
 };

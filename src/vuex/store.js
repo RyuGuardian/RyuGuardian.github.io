@@ -14,7 +14,7 @@ Vue.use(Vuex);
 
 const state = {
   loop: null,
-  isPaused: true,
+  isPaused: false,
   gravity: 1
 };
 
