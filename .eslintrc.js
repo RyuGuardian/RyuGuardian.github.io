@@ -37,7 +37,6 @@ module.exports = {
     'vue/require-prop-types': 'warn',
     'vue/valid-v-on': 'off',
     'vue/html-indent': ['warn', 2, { 'alignAttributesVertically': false }],
-    'vue/attributes-order': 'warn',
     'vue/order-in-components': 'warn',
     'vue/no-multi-spaces': 'off',
     'vue/return-in-computed-property': 'warn',
@@ -48,6 +47,19 @@ module.exports = {
           'max': 3,
           'allowFirstLine': true
         }
-    }]
+    }],
+    'vue/attributes-order': ['warn', { order: [
+      'DEFINITION',
+      'LIST_RENDERING',
+      'CONDITIONALS',
+      'RENDER_MODIFIERS',
+      'UNIQUE',
+      'GLOBAL',
+      'TWO_WAY_BINDING',
+      'OTHER_DIRECTIVES',
+      'OTHER_ATTR',
+      'EVENTS',
+      'CONTENT'
+    ]}]
   }
 }

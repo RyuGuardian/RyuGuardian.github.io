@@ -19,7 +19,9 @@
     />
 
     <Map ref="map"
-      :terrain="terrainLines">
+      :terrain="terrainLines"
+      :objects="mapObjects"
+    >
       <Player ref="player"
         :width="width"
         :height="height"
@@ -46,7 +48,8 @@ export default {
 
   computed: Object.assign({},
     mapState(['gravity', 'isPaused']),
-    mapState('map', ['terrainLines']),
+    mapState('map', ['terrainLines', 'mapObjects']),
+    mapGetters('map', ['getMapWidth']),
     mapState('player', [
       'width',
       'height',
@@ -57,10 +60,43 @@ export default {
       'jumpStrength',
       'fallSpeed'
     ]),
-    mapGetters('player', ['getPlayerLeftX', 'getPlayerRightX', 'getPlayerTopY', 'getPlayerBottomY'])
+    mapGetters('player', [
+      'getPlayerLeftX',
+      'getPlayerRightX',
+      'getPlayerTopY',
+      'getPlayerBottomY'
+    ])
   ),
 
   mounted: function() {
+    // Create array of Block objects for passing to map
+    if(!this.mapObjects.Block) {
+      fetch('https://codepen.io/AustinAKing/public/feed')
+        .then((res) => res.text())
+        .then((str) => (new DOMParser()).parseFromString(str, 'text/xml'))
+        .then((xmlDoc) => {
+          // Add data to mapObjects to create blocks on map later
+          Array.from(xmlDoc.getElementsByTagName('item')).forEach((item) => {
+            let title = item.getElementsByTagName('title')[0].textContent;
+
+            // Don't include lecture/demo exercises, my css reset, or in-work projects
+            if((/lecture|demo|reset|\(in-work\)/i).test(title) === false) {
+              let url = item.getElementsByTagName('link')[0].textContent;
+              let id = url.split('/').slice(-1)[0];
+
+              this.addMapObject({
+                type: 'Block',
+                data: {
+                  id,
+                  url,
+                  title
+                }
+              });
+            }
+          });
+        });
+    }
+
     this.$nextTick(function() {
       // Start loop
       this.startLoop(
@@ -75,6 +111,7 @@ export default {
 
   methods: Object.assign({},
     mapActions(['startLoop', 'pauseLoop']),
+    mapActions('map', ['addMapObject']),
     mapActions('player', ['movePlayerLeft', 'movePlayerRight', 'jumpPlayer', 'updatePlayer'])
   ),
 
