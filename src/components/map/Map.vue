@@ -17,7 +17,7 @@
 /*** HTML ***/
 <template>
   <div class="map">
-    <svg class="terrain" :style="stringifyTerrainPointsForPolygon">
+    <svg class="terrain">
       <polygon class="ground" :points="stringifyTerrainPointsForPolygon" fill="darkgoldenrod" />
     </svg>
 
@@ -80,10 +80,11 @@ export default {
             componentArr.push({
               // Each mObj needs and should have: type, id, width, height, position, visible
               name: type,
-              id: type + '_' + (mObj.id || (i + Math.floor(Math.random() * 10000).toFixed())),
+              id: mObj.id || (i + Math.floor(Math.random() * 10000).toFixed()),
               width: (mObj.width > 0) ? mObj.width : 50,
               height: (mObj.height > 0) ? mObj.height : 50,
-              position: { x: Math.floor((i + 0.5) * distanceBetween), y: 350 },
+              position: (mObj.position && mObj.position.x !== undefined && mObj.position.y !== undefined) ?
+                mObj.position : { x: mObj.position.x || Math.floor((i + 0.5) * distanceBetween), y: mObj.position.y || 350 },
               visible: mObj.visible !== undefined ? mObj.visible : true,
               data: mObj.data !== undefined ? mObj.data : null
             });

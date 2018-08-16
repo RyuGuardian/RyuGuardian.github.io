@@ -10,7 +10,7 @@ const initialState = {
       [window.innerWidth * 2, Math.floor(window.innerHeight * 0.75)]
     ]
   ],
-  mapObjects: {}
+  mapObjects: {}  // Position of items within named arrays matters: left to right on map
 };
 
 export default {

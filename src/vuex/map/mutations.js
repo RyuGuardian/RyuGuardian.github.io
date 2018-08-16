@@ -11,6 +11,6 @@ export default {
       Vue.set(state.mapObjects, type, []);
     }
 
-    Vue.set(state.mapObjects[type], state.mapObjects[type].length, newObject.data);
+    Vue.set(state.mapObjects[type], state.mapObjects[type].length, newObject.details);
   }
 };

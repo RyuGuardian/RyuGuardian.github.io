@@ -25,5 +25,6 @@ export default new Vuex.Store({
   modules: {
     map,
     player
-  }
+  },
+  strict: process.env.MODE === 'development'
 });

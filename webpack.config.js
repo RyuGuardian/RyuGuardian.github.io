@@ -96,6 +96,8 @@ module.exports = (env, argv) => {
       }]),
 
       new VueLoaderPlugin(),
+
+      new webpack.DefinePlugin({ 'process.env.MODE': JSON.stringify(argv.mode) })
     ]
   }
 };

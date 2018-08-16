@@ -9,3 +9,42 @@ export const getMapWidth = (state) => {
     return Math.max(lineA.reduce(rightmostXValue), lineB.reduce(rightmostXValue));
   }, [[0, 0], [0, 0]]);
 };
+
+export const getObjectsNearPlayer = (state, getters, rootState, rootGetters) => {
+  // Query each object array in map for proximity (within 300px left/right) of player
+  // (Start a percentage through array and look left and right)
+  var objectsNearPlayer = [];
+
+  Object.values(state.mapObjects).forEach((typeArr) => {
+    let progress = (rootGetters['player/getPlayerMapProgress'] * typeArr.length).toFixed();
+
+    // Work through arrays until reaching an object past player position by over 300
+    let progressIter = progress - 1;
+    let currObj = typeArr[progressIter];
+
+    // Look left until reaching an object more than 300 pixels left of player
+    while(currObj && rootGetters['player/getPlayerLeftX'] - currObj.position.x < 300) {
+      if(Math.abs(rootGetters['player/getPlayerLeftX'] - currObj.position.x) < 300) {
+        objectsNearPlayer.push(currObj);
+      }
+
+      progressIter--;
+      currObj = typeArr[progressIter];
+    }
+
+    progressIter = progress;
+    currObj = typeArr[progressIter];
+
+    // Look right until reaching an object more than 300 pixels right of player
+    while(currObj && rootGetters['player/getPlayerRightX'] - currObj.position.x > -300) {
+      if(Math.abs(rootGetters['player/getPlayerRightX'] - currObj.position.x) < 300) {
+        objectsNearPlayer.push(currObj);
+      }
+
+      progressIter++;
+      currObj = typeArr[progressIter];
+    }
+  });
+
+  return objectsNearPlayer;
+};
