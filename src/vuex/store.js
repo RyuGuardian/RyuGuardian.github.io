@@ -9,13 +9,14 @@ import actions from './actions';
 // MODULES
 import map from './map/index';
 import player from './player/index';
+import msgDisplay from './msg_display/index';
 
 Vue.use(Vuex);
 
 const state = {
   loop: null,
   isPaused: false,
-  gravity: 1
+  gravity: 3
 };
 
 export default new Vuex.Store({
@@ -24,7 +25,8 @@ export default new Vuex.Store({
   actions,
   modules: {
     map,
-    player
+    player,
+    msgDisplay
   },
   strict: process.env.MODE === 'development'
 });

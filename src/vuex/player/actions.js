@@ -35,8 +35,8 @@ export default {
     commit(mType.CHANGE_FALL_SPEED, acceleration);
   },
 
-  jumpPlayer: ({ commit, dispatch, state }) => {
-    if(state.fallSpeed === 0 && state.onGround) {
+  jumpPlayer: ({ commit, dispatch, state, rootState }) => {
+    if(rootState.isPaused === false && state.fallSpeed === 0 && state.onGround) {
       commit(mType.CHANGE_FALL_SPEED, -state.jumpStrength);
       dispatch('updatePlayerOnGround', false);
     }
@@ -107,7 +107,6 @@ export default {
             && newSides.top < objBottom                                // AND player top will be within obj
           ) {
             // Collision detected
-            console.log('***LOG: COLLISION DETECTED');
             if(getters.getPlayerTopY <= objBottom) {
               // Player is already next to object
               if(delta.x > 0) {
@@ -127,6 +126,7 @@ export default {
               if(delta.y < 0) {
                 delta.y = objBottom - getters.getPlayerTopY;
                 commit(mType.CHANGE_FALL_SPEED, -state.fallSpeed);
+                dispatch('map/activateObject', obj, { root: true });
               }
             }
           }
@@ -138,8 +138,6 @@ export default {
   },
 
   updatePlayer: ({ commit, dispatch, state, rootState }, { terrain, mObjects }) => {
-    console.log('***UPDATE: ', rootState.loop);
-
     var delta = {
       x: state.movementDirection * state.movementSpeed,
       y: state.fallSpeed + (state.onGround ? 0 : rootState.gravity)

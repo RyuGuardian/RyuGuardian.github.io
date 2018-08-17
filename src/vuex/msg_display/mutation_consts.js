@@ -1,0 +1,5 @@
+// --MSGDISPLAY
+export const CHANGE_MESSAGE = 'CHANGE_MESSAGE';
+export const CHANGE_IMAGE = 'CHANGE_IMAGE';
+export const CHANGE_LINK = 'CHANGE_LINK';
+export const CHANGE_ACTIVE = 'CHANGE_ACTIVE';

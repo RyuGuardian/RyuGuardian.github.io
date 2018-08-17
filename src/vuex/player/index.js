@@ -8,9 +8,9 @@ const initialState = {
   height: 100,
   position: { x: Math.floor(window.innerWidth / 2), y: Math.floor(window.innerHeight / 2) },
   movementDirection: 0,
-  movementSpeed: 5,
+  movementSpeed: 15,
   onGround: false,
-  jumpStrength: 25,
+  jumpStrength: 50,
   fallSpeed: 0,
   maxFallSpeed: 15
 };

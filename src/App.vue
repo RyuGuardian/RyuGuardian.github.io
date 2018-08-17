@@ -28,6 +28,13 @@
         :position="position"
       />
     </Map>
+
+    <MsgDisplay ref="msg-display" :deactivate="deactivate"
+      :message="message"
+      :url="displayLink"
+      :image="displayImageUrl"
+      :active="activeUrl"
+    />
   </div>
 </template>
 
@@ -39,11 +46,13 @@ import store from './vuex/store';
 
 import Map from './components/map/Map.vue';
 import Player from './components/player/Player.vue';
+import MsgDisplay from './components/msg_display/MsgDisplay.vue';
 
 export default {
   components: {
     Map,
-    Player
+    Player,
+    MsgDisplay
   },
 
   computed: Object.assign({},
@@ -65,7 +74,8 @@ export default {
       'getPlayerRightX',
       'getPlayerTopY',
       'getPlayerBottomY'
-    ])
+    ]),
+    mapState('msgDisplay', ['message', 'displayLink', 'displayImageUrl', 'activeUrl'])
   ),
 
   mounted: function() {
@@ -79,7 +89,7 @@ export default {
         .then((xmlDoc) => {
           var itemsArr = Array.from(xmlDoc.getElementsByTagName('item')).filter((item) => {
             // Don't include lecture/demo exercises, my css reset, or in-work projects
-            return !((/lecture|demo|reset|\(in-work\)/i).test(item.getElementsByTagName('title')[0].textContent));
+            return !((/lecture|reset|\(in-work\)/i).test(item.getElementsByTagName('title')[0].textContent));
           });
 
           var distanceBetween = Math.floor(this.getMapWidth / itemsArr.length);
@@ -93,14 +103,16 @@ export default {
             this.addMapObject({
               type: 'Block',
               details: {
-                id: 'Block_' + id,
+                id: 'Block__' + id,
                 width: 80,
                 height: 80,
-                position: { x: Math.floor((i + 0.5) * distanceBetween), y: 350 },
+                position: { x: Math.floor((i + 0.5) * distanceBetween), y: 450 },
                 visible: true,
                 data: {
-                  url,
-                  title
+                  title,
+                  url: url.replace('/pen/', '/details/')    // Included slashes in case 'pen' could be in slug
+                    + '?preview_height=800',
+                  imageUrl: url + '/image/small.png'
                 }
               }
             });
@@ -110,27 +122,24 @@ export default {
     }
 
     this.$nextTick(function() {
-      console.log('***PreLoop: ', this.loop);
-
       if(!this.loop) {
         // Start loop
         this.startLoop(
           setInterval(() => {
             if(this.isPaused === false) {
               this.updatePlayer({ terrain: this.terrainLines, mObjects: this.getObjectsNearPlayer });
-              // UPDATE MAP ?
             }
           }, 20)
         );
       }
     });
-    console.log('***PostStart: ', this.loop);
   },
 
   methods: Object.assign({},
     mapActions(['startLoop', 'pauseLoop']),
     mapActions('map', ['addMapObject', 'activateObject']),
-    mapActions('player', ['movePlayerLeft', 'movePlayerRight', 'jumpPlayer', 'updatePlayer'])
+    mapActions('player', ['movePlayerLeft', 'movePlayerRight', 'jumpPlayer', 'updatePlayer']),
+    mapActions('msgDisplay', ['changeMessage', 'openLink', 'deactivate'])
   ),
 
   store

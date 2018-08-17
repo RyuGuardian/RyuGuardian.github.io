@@ -20,7 +20,8 @@ module.exports = {
       'while': { 'after': false }
     }}],
     'space-before-function-paren': ['warn', 'never'],
-    'no-unused-vars': ['warn'],
+    'no-unused-vars': 'warn',
+    'no-unused-expressions': 'warn',
     'quotes': 'off',
     'no-multi-spaces': ['warn', { ignoreEOLComments: true }],
     'indent': 'warn',
@@ -33,6 +34,9 @@ module.exports = {
     'space-in-parens': 'warn',
     'operator-linebreak': ['warn', 'before', { 'overrides': { '?': 'ignore', ':': 'ignore' } }],
     'space-before-blocks': 'warn',
+    'prefer-promise-reject-errors': ['error', { 'allowEmptyReject': true }],
+
+    'standard/object-curly-even-spacing': 'warn',
 
     'vue/require-prop-types': 'warn',
     'vue/valid-v-on': 'off',
