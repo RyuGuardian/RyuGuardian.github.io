@@ -1,0 +1,3 @@
+// --MSGDISPLAY
+export const CHANGE_MESSAGE = 'CHANGE_MESSAGE';
+export const CHANGE_VISUAL = 'CHANGE_VISUAL';

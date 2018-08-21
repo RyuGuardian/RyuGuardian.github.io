@@ -14,8 +14,8 @@ export default {
     state.fallSpeed += acceleration;
   },
 
-  [mType.UPDATE_POSITION](state, { xChange, yChange }) {
-    state.position.x += xChange;
-    state.position.y += yChange;
+  [mType.UPDATE_POSITION](state, delta) {
+    state.position.x += delta.x;
+    state.position.y += delta.y;
   }
 };

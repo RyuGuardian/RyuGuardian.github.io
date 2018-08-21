@@ -1,12 +1,46 @@
 
-.app[data-v-4259efaa]{height:100%
+.app[data-v-e846bb44]{height:100%
 }
-body,html{height:100%;overflow:hidden;margin:0}body{background:pink}
+body,html{font-family:sans-serif;height:100%;overflow:hidden;margin:0}body{overflow:visible;background:pink}
 
-.map[data-v-244f837f]{background-color:skyblue;height:100%
+.block[data-v-888505bc]{display:inline-block;position:absolute;background-color:brown
 }
-.map .terrain[data-v-244f837f]{width:100%;height:100%
+.block img[data-v-888505bc]{width:100%;height:100%
+}
+
+.map[data-v-a8da7dd8]{background-color:skyblue;height:100%
+}
+.map .terrain[data-v-a8da7dd8]{width:100%;height:100%
 }
 
 .player[data-v-160a3656]{display:inline-block;position:absolute;background-color:green
+}
+
+.message-display[data-v-bbf1fb2e]{font-size:2em;font-weight:bold;width:calc(96vw - 20px);min-width:780px;height:30vh;position:fixed;left:2vw;top:20px;background-color:rgba(255,255,255,0.5);border:10px solid black;border-radius:15px;padding:5px;display:inline-flex;justify-content:space-between;align-content:center
+}
+.message-display[data-v-bbf1fb2e] div{display:inherit
+}
+.message-display[data-v-bbf1fb2e] .message{display:flex;flex-direction:column;flex:1;height:100%
+}
+.message-display[data-v-bbf1fb2e] .message h1,.message-display[data-v-bbf1fb2e] .message h2,.message-display[data-v-bbf1fb2e] .message h5,.message-display[data-v-bbf1fb2e] .message p{font-size:inherit
+}
+.message-display[data-v-bbf1fb2e] .message .spacer{height:0.75rem
+}
+.message-display[data-v-bbf1fb2e] .message div{display:block;width:100%
+}
+.message-display[data-v-bbf1fb2e] .message div div{display:flex;justify-content:space-around
+}
+.message-display[data-v-bbf1fb2e] .message div div h5{margin:5px 0;color:blue
+}
+.message-display[data-v-bbf1fb2e] .message div h1{text-align:center;margin:15px 0
+}
+.message-display[data-v-bbf1fb2e] .message div p{margin:0
+}
+.message-display[data-v-bbf1fb2e] .message div p strong{color:red
+}
+.message-display[data-v-bbf1fb2e] .message h2{margin:auto;padding-right:20px;padding-left:20px
+}
+.message-display[data-v-bbf1fb2e] .visual{flex:1
+}
+.message-display[data-v-bbf1fb2e] .visual iframe{width:100%;height:100%
 }

@@ -1,9 +1,11 @@
 body, html {
+  font-family: sans-serif;
   height: 100%;
   overflow: hidden;
   margin: 0;
 }
 
 body {
+  overflow: visible;
   background: pink;
 }

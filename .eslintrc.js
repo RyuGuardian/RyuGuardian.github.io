@@ -20,7 +20,8 @@ module.exports = {
       'while': { 'after': false }
     }}],
     'space-before-function-paren': ['warn', 'never'],
-    'no-unused-vars': ['warn'],
+    'no-unused-vars': 'warn',
+    'no-unused-expressions': 'warn',
     'quotes': 'off',
     'no-multi-spaces': ['warn', { ignoreEOLComments: true }],
     'indent': 'warn',
@@ -33,11 +34,13 @@ module.exports = {
     'space-in-parens': 'warn',
     'operator-linebreak': ['warn', 'before', { 'overrides': { '?': 'ignore', ':': 'ignore' } }],
     'space-before-blocks': 'warn',
+    'prefer-promise-reject-errors': ['error', { 'allowEmptyReject': true }],
+
+    'standard/object-curly-even-spacing': 'warn',
 
     'vue/require-prop-types': 'warn',
     'vue/valid-v-on': 'off',
     'vue/html-indent': ['warn', 2, { 'alignAttributesVertically': false }],
-    'vue/attributes-order': 'warn',
     'vue/order-in-components': 'warn',
     'vue/no-multi-spaces': 'off',
     'vue/return-in-computed-property': 'warn',
@@ -48,6 +51,19 @@ module.exports = {
           'max': 3,
           'allowFirstLine': true
         }
-    }]
+    }],
+    'vue/attributes-order': ['warn', { order: [
+      'DEFINITION',
+      'LIST_RENDERING',
+      'CONDITIONALS',
+      'RENDER_MODIFIERS',
+      'UNIQUE',
+      'GLOBAL',
+      'TWO_WAY_BINDING',
+      'OTHER_DIRECTIVES',
+      'OTHER_ATTR',
+      'EVENTS',
+      'CONTENT'
+    ]}]
   }
 }
