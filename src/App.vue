@@ -10,7 +10,7 @@
 
 /*** HTML ***/
 <template>
-  <div class="app">
+  <div class="app" :style="{ width: getMapWidth + 'px' }">
     <GlobalEvents
       @keydown.esc="pauseLoop"
       @keydown.left="movePlayerLeft"    @keyup.left="movePlayerRight"
@@ -29,11 +29,9 @@
       />
     </Map>
 
-    <MsgDisplay ref="msg-display" :deactivate="deactivate"
-      :message="message"
-      :url="displayLink"
-      :image="displayImageUrl"
-      :active="activeUrl"
+    <MsgDisplay ref="msg-display"
+      :html-message="htmlMessage"
+      :msg-box-resource-html="msgBoxResourceHtml"
     />
   </div>
 </template>
@@ -56,9 +54,10 @@ export default {
   },
 
   computed: Object.assign({},
-    mapState(['gravity', 'isPaused']),
+    mapState(['gravity', 'isPaused', 'logos']),
     mapState('map', ['terrainLines', 'mapObjects']),
-    mapGetters('map', ['getMapWidth', 'getObjectsNearPlayer']),
+    mapGetters('map', ['getMapLeftAndRight', 'getMapWidth', 'getActivatedObjects', 'getObjectsNearPlayer']),
+    mapState('viewport', ['viewPosition', 'viewDimensions']),
     mapState('player', [
       'width',
       'height',
@@ -75,18 +74,17 @@ export default {
       'getPlayerTopY',
       'getPlayerBottomY'
     ]),
-    mapState('msgDisplay', ['message', 'displayLink', 'displayImageUrl', 'activeUrl'])
+    mapState('msgDisplay', ['htmlMessage', 'msgBoxResourceHtml'])
   ),
 
   mounted: function() {
-    console.log('***MODE: ', process.env.MODE);
-
     // Create array of Block objects for passing to map
     if(!this.mapObjects.Block) {
       fetch('https://codepen.io/AustinAKing/public/feed')
         .then((res) => res.text())
         .then((str) => (new DOMParser()).parseFromString(str, 'text/xml'))
         .then((xmlDoc) => {
+          var type = 'Block';
           var itemsArr = Array.from(xmlDoc.getElementsByTagName('item')).filter((item) => {
             // Don't include lecture/demo exercises, my css reset, or in-work projects
             return !((/lecture|reset|\(in-work\)/i).test(item.getElementsByTagName('title')[0].textContent));
@@ -98,27 +96,49 @@ export default {
           itemsArr.forEach((item, i) => {
             let title = item.getElementsByTagName('title')[0].textContent;
             let url = item.getElementsByTagName('link')[0].textContent;
-            let id = url.split('/').slice(-1)[0];
+            let id = url.split('/').slice(-1)[0];   // ID = SLUG
+            url = url.replace('/pen/', '/details/') + '?preview_height=600';   // Included replacing slashes in case "pen" could be in slug
 
             this.addMapObject({
-              type: 'Block',
+              type,
               details: {
-                id: 'Block__' + id,
+                id: `${type}__${id}`,
                 width: 80,
                 height: 80,
                 position: { x: Math.floor((i + 0.5) * distanceBetween), y: 450 },
                 visible: true,
+                activated: false,
                 data: {
                   title,
-                  url: url.replace('/pen/', '/details/')    // Included slashes in case 'pen' could be in slug
-                    + '?preview_height=800',
-                  imageUrl: url + '/image/small.png'
+                  url,
+                  resourceHtml:
+                  `<iframe
+                    scrolling="no"
+                    title="${title}"
+                    src="//codepen.io/AustinAKing/embed/${id}/?theme-id=0&default-tab=result&embed-version=2"
+                    frameborder="no"
+                    allowtransparency="true"
+                    allowfullscreen="true"
+                    style="width: 100%;"
+                  >
+                    (Pen failed to load.)
+                    <a href="${url}">
+                      See the Pen on CodePen.
+                    </a>
+                  </iframe>`,
+                  hostLogo: this.logos.codepen
                 }
               }
             });
           });
         });
       // End fetch promises
+    }
+
+    if(this.viewDimensions.width !== window.innerWidth
+      || this.viewDimensions.height !== window.innerHeight
+    ) {
+      this.transformViewport({ width: window.innerWidth, height: window.innerHeight });
     }
 
     this.$nextTick(function() {
@@ -128,6 +148,8 @@ export default {
           setInterval(() => {
             if(this.isPaused === false) {
               this.updatePlayer({ terrain: this.terrainLines, mObjects: this.getObjectsNearPlayer });
+              this.updateViewport();
+              window.scroll(this.viewPosition.x, this.viewPosition.y);
             }
           }, 20)
         );
@@ -138,8 +160,9 @@ export default {
   methods: Object.assign({},
     mapActions(['startLoop', 'pauseLoop']),
     mapActions('map', ['addMapObject', 'activateObject']),
+    mapActions('viewport', ['moveViewport', 'updateViewport', 'transformViewport']),
     mapActions('player', ['movePlayerLeft', 'movePlayerRight', 'jumpPlayer', 'updatePlayer']),
-    mapActions('msgDisplay', ['changeMessage', 'openLink', 'deactivate'])
+    mapActions('msgDisplay', ['changeMessage'])
   ),
 
   store

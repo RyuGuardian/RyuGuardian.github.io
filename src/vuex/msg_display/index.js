@@ -3,15 +3,16 @@ import mutations from './mutations';
 import actions from './actions';
 
 const initialState = {
-  message: "Welcome to <em>My Portfolio: The Game</em>!<br />"
-    + "Move left: A Key / Left Arrow<br />"
-    + "Move right: D Key / Right Arrow<br />"
-    + "Jump: Spacebar<br /><br />"
-    + "Hit the blocks from underneath.<br />"
-    + "One hit displays a project, a second hit will open it in a new tab.",
-  displayLink: '',
-  displayImageUrl: '',
-  activeUrl: ''
+  htmlMessage: "<div>"
+    + "<h1>Welcome to <em>My Portfolio: The Game</em>!</h1>"
+    + "<div><h5>Left: &larr; / A</h5><h5>Jump: SPACE</h5><h5>Right: &rarr; / D</h5></div>"
+    + "<p>Hit a block from underneath to display a project.</p>"
+    + "<p>A second hit will open it in a <strong>new window/tab</strong>.</p>"
+    + "<div class='spacer'></div>"
+    + "<p>This game-like site was made using Vue and Vuex.</p>"
+    + "<p>(If blocks aren't visible yet, data is being fetched.)</p>"
+    + "</div>",
+  msgBoxResourceHtml: ""
 };
 
 export default {

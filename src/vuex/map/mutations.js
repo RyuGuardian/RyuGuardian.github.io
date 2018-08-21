@@ -12,5 +12,8 @@ export default {
     }
 
     Vue.set(state.mapObjects[type], state.mapObjects[type].length, newObject.details);
+  },
+  [mType.TOGGLE_OBJECT_ACTIVATION](state, mObject) {
+    mObject.activated = !mObject.activated;
   }
 };

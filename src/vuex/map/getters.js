@@ -4,10 +4,27 @@ const rightmostXValue = (pointA, pointB) => {
   return Math.max(pointA[0], pointB[0]);
 };
 
-export const getMapWidth = (state) => {
+const leftmostXValue = (pointA, pointB) => {
+  return Math.min(pointA[0], pointB[0]);
+};
+
+export const getMapLeftAndRight = (state) => {
   return state.terrainLines.reduce((lineA, lineB) => {
-    return Math.max(lineA.reduce(rightmostXValue), lineB.reduce(rightmostXValue));
-  }, [[0, 0], [0, 0]]);
+    let start = Math.min(lineA.reduce(leftmostXValue), lineB.reduce(leftmostXValue));
+    let end = Math.max(lineA.reduce(rightmostXValue), lineB.reduce(rightmostXValue));
+
+    return [[start, 0], [end, 0]];
+  }, [[0, 0], [0, 0]]).reduce((pointA, pointB) => [pointA[0], pointB[0]]);
+};
+
+export const getMapWidth = (state, getters) => {
+  return getters.getMapLeftAndRight[1] - getters.getMapLeftAndRight[0];
+};
+
+export const getActivatedObjects = (state) => {
+  return Object.values(state.mapObjects).reduce((reducedArr, typeArr) => {
+    return reducedArr.concat(typeArr.filter((mObj) => mObj.activated));
+  }, []);
 };
 
 export const getObjectsNearPlayer = (state, getters, rootState, rootGetters) => {

@@ -10,13 +10,15 @@ import actions from './actions';
 import map from './map/index';
 import player from './player/index';
 import msgDisplay from './msg_display/index';
+import viewport from './viewport';
 
 Vue.use(Vuex);
 
 const state = {
   loop: null,
   isPaused: false,
-  gravity: 3
+  gravity: 3,
+  logos: { codepen: 'https://blog.codepen.io/wp-content/uploads/2012/06/Button-Black-Small.png' }
 };
 
 export default new Vuex.Store({
@@ -25,6 +27,7 @@ export default new Vuex.Store({
   actions,
   modules: {
     map,
+    viewport,
     player,
     msgDisplay
   },

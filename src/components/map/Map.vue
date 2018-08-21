@@ -27,6 +27,7 @@
       :height="obj.height"
       :position="obj.position"
       :visible="obj.visible"
+      :activated="obj.activated"
       :data="obj.data"
     />
 
@@ -86,6 +87,7 @@ export default {
               position: (mObj.position && mObj.position.x !== undefined && mObj.position.y !== undefined) ?
                 mObj.position : { x: mObj.position.x || Math.floor((i + 0.5) * distanceBetween), y: mObj.position.y || 350 },
               visible: mObj.visible !== undefined ? mObj.visible : true,
+              activated: mObj.activated !== undefined ? mObj.activated : null,
               data: mObj.data !== undefined ? mObj.data : null
             });
           });

@@ -1,8 +1,12 @@
 /*** STYLE ***/
 <style lang="scss" scoped>
 
-.display {
+.message-display {
+  font-size: 2em;
+  font-weight: bold;
+
   width: calc(96vw - 20px);
+  min-width: 780px;
   height: 30vh;
 
   position: fixed;
@@ -17,17 +21,67 @@
 
   display: inline-flex;
   justify-content: space-between;
+  align-content: center;
 
-  h1 {
-    margin: auto auto auto 0;
-    padding-right: 20px;
+  /deep/ div {
+    display: inherit;
   }
 
-  a {
-    border: 5px solid blue;
-    border-radius: 10px;
+  /deep/ .message {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
 
-    img {
+    h1, h2, h5, p {
+      font-size: inherit;
+    }
+
+    .spacer {
+      height: 0.75rem;
+    }
+
+    div {
+      display: block;
+      width: 100%;
+
+      div {
+        display: flex;
+        justify-content: space-around;
+
+        h5 {
+          margin: 5px 0;
+          color: blue;
+        }
+      }
+
+      h1 {
+        text-align: center;
+        margin: 15px 0;
+      }
+
+      p {
+        margin: 0;
+
+        strong {
+          color: red;
+        }
+      }
+    }
+
+    h2 {
+      margin: auto;
+      padding-right: 20px;
+      padding-left: 20px;
+    }
+
+  }
+
+  /deep/ .visual {
+    flex: 1;
+
+    iframe {
+      width: 100%;
       height: 100%;
     }
   }
@@ -37,15 +91,9 @@
 
 /*** HTML ***/
 <template>
-  <div class="display">
-    <h1 v-html="message" />
-    <a  v-if="image"
-      :href="url"
-      target="external"
-      @click="deactivate"
-    >
-      <img :src="image" alt="screenshot" title="Clicking will open project in another window/tab.">
-    </a>
+  <div class="message-display">
+    <div v-if="htmlMessage" class="message" v-html="htmlMessage" />
+    <div v-if="msgBoxResourceHtml" class="visual" v-html="msgBoxResourceHtml" />
   </div>
 </template>
 
@@ -54,31 +102,13 @@
 
 export default {
   props: {
-    message: {
+    htmlMessage: {
       type: String,
       default: ''
     },
-    url: {
+    msgBoxResourceHtml: {
       type: String,
       default: ''
-    },
-    image: {
-      type: String,
-      default: ''
-    },
-    active: {
-      type: String,
-      default: ''
-    },
-    deactivate: {
-      type: Function,
-      default: () => {}
-    }
-  },
-
-  watch: {
-    active: function(newurl, old) {
-      this.$el.getElementsByTagName('a')[0].click();
     }
   }
 };

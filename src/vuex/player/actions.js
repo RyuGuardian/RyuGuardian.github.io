@@ -44,10 +44,10 @@ export default {
 
   // Calculates y-change due to fall speed and possible map collision
   // Returns promise with change in player's position
-  detectMapCollision: ({ dispatch, state, getters }, { terrain, delta }) => {
+  detectMapCollision: ({ dispatch, state, getters, rootGetters }, { terrain, delta }) => {
     return new Promise((resolve) => {
-      // Check for ground collision only if falling downward (no walls or ceiling for now)
       if(state.fallSpeed >= 0) {
+        // Check for ground collision only if falling downward (no walls or ceiling for now)
         let highestGroundPoint = getters.getPlayerBottomY;
 
         // Predict collision (current pos + new pos >= highest point on ground)
@@ -74,6 +74,18 @@ export default {
           // Update status and fall speed on collision
           dispatch('updatePlayerOnGround', true);
           delta.y = highestGroundPoint - getters.getPlayerBottomY;
+        }
+      }
+
+      if(state.movementDirection < 0) {
+        // Check for end-of-map collision if moving
+        if(getters.getPlayerLeftX <= rootGetters['map/getMapLeftAndRight'][0]) {
+          delta.x = rootGetters['map/getMapLeftAndRight'][0] - getters.getPlayerLeftX;
+        }
+      }
+      else if(state.movementDirection > 0) {
+        if(getters.getPlayerRightX >= rootGetters['map/getMapLeftAndRight'][1]) {
+          delta.x = rootGetters['map/getMapLeftAndRight'][1] - getters.getPlayerRightX;
         }
       }
 
