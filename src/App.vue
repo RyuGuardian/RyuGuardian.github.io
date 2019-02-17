@@ -80,6 +80,38 @@ export default {
   mounted: function() {
     // Create array of Block objects for passing to map
     if(!this.mapObjects.Block) {
+      this.addMapObject({
+        type: 'Block',
+        details: {
+          id: 'Block_0001',
+          width: 80,
+          height: 80,
+          position: { x: 160, y: 450 },
+          visible: true,
+          activated: false,
+          data: {
+            title: "CompoundX.org",
+            url: 'https://compoundx.org/',
+            resourceHtml:
+              `<iframe
+                scrolling="yes"
+                title="CompoundX.org"
+                src="https://compoundx.org/"
+                frameborder="no"
+                allowtransparency="true"
+                allowfullscreen="true"
+                style="width: 100%;"
+              >
+                (Site failed to load.)
+                <a href="https://compoundx.org/">
+                  Visit CompoundX.org.
+                </a>
+              </iframe>`,
+            blockText: "CX"
+          }
+        }
+      });
+
       fetch('https://codepen.io/AustinAKing/public/feed')
         .then((res) => res.text())
         .then((str) => (new DOMParser()).parseFromString(str, 'text/xml'))
@@ -90,10 +122,10 @@ export default {
             return !((/lecture|reset|\(in-work\)/i).test(item.getElementsByTagName('title')[0].textContent));
           });
 
-          var distanceBetween = Math.floor(this.getMapWidth / itemsArr.length);
+          var distanceBetween = Math.floor(this.getMapWidth / (itemsArr.length + this.mapObjects.Block.length));
 
           // Add data to mapObjects to create blocks on map later
-          itemsArr.forEach((item, i) => {
+          itemsArr.forEach((item) => {
             let title = item.getElementsByTagName('title')[0].textContent;
             let url = item.getElementsByTagName('link')[0].textContent;
             let id = url.split('/').slice(-1)[0];   // ID = SLUG
@@ -105,27 +137,27 @@ export default {
                 id: `${type}__${id}`,
                 width: 80,
                 height: 80,
-                position: { x: Math.floor((i + 0.5) * distanceBetween), y: 450 },
+                position: { x: Math.floor((this.mapObjects.Block.length + 0.5) * distanceBetween), y: 450 },
                 visible: true,
                 activated: false,
                 data: {
                   title,
                   url,
                   resourceHtml:
-                  `<iframe
-                    scrolling="no"
-                    title="${title}"
-                    src="//codepen.io/AustinAKing/embed/${id}/?theme-id=0&default-tab=result&embed-version=2"
-                    frameborder="no"
-                    allowtransparency="true"
-                    allowfullscreen="true"
-                    style="width: 100%;"
-                  >
-                    (Pen failed to load.)
-                    <a href="${url}">
-                      See the Pen on CodePen.
-                    </a>
-                  </iframe>`,
+                    `<iframe
+                      scrolling="no"
+                      title="${title}"
+                      src="//codepen.io/AustinAKing/embed/${id}/?theme-id=0&default-tab=result&embed-version=2"
+                      frameborder="no"
+                      allowtransparency="true"
+                      allowfullscreen="true"
+                      style="width: 100%;"
+                    >
+                      (Pen failed to load.)
+                      <a href="${url}">
+                        See the Pen on CodePen.
+                      </a>
+                    </iframe>`,
                   hostLogo: this.logos.codepen
                 }
               }
