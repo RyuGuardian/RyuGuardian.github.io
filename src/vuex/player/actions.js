@@ -119,7 +119,7 @@ export default {
             && newSides.top < objBottom                                // AND player top will be within obj
           ) {
             // Collision detected
-            if(getters.getPlayerTopY <= objBottom) {
+            if(getters.getPlayerTopY < objBottom) {
               // Player is already next to object
               if(delta.x > 0) {
                 // If moving right
