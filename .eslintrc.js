@@ -64,6 +64,7 @@ module.exports = {
       'OTHER_ATTR',
       'EVENTS',
       'CONTENT'
-    ]}]
+    ]}],
+    'vue/mustache-interpolation-spacing': 'warn'
   }
 }

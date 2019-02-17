@@ -2,14 +2,45 @@
 <style lang="scss" scoped>
 
 .block {
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   position: absolute;
   background-color: brown;
+
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+
+    text-decoration: none;
+  }
 
   img {
     width: 100%;
     height: 100%;
-    // background-color: black;
+  }
+
+  div {
+    display: flex;
+    align-content: center;
+
+    height: 50%;
+
+    color: white;
+    background-color: black;
+    border-radius: 5px;
+
+    h5 {
+      display: flex;
+      font-size: 2.25rem;
+
+      margin: 0 .25rem;
+    }
   }
 }
 
@@ -19,7 +50,10 @@
 <template v-if="hasDimensions">
   <div class="block" :style="[dimensionsAsStyleObj, positionAsStyleObj]" >
     <a :href="data.url" target="external">
-      <img :src="data.hostLogo" alt="CodePen Logo">
+      <img v-if="data.hostLogo" :src="data.hostLogo" alt="Site Logo">
+      <div v-else>
+        <h5>{{ data.blockText }}</h5>
+      </div>
     </a>
   </div>
 </template>
