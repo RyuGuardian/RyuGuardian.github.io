@@ -18,7 +18,7 @@ Generated files specifically needed for the hosted GitHub Page will be built loc
 
 1. Make sure the local repo is up to date.
 2. Merge dev to master (make sure to `git checkout master`).
-3. Run `npm build`. This should create 3 files in a folder called 'dist'.
+3. Run `npm run build`. This should create 3 files in a folder called 'dist'.
 4. Test it by opening index.html in browser(s).
 5. Add files and commit.
 6. Push to repo.
